@@ -31,7 +31,7 @@ public class TranstuBackendApplication {
         };
     }
 
-//    @Bean
+    @Bean
     public CommandLineRunner commandLineRunner(UserRepository userRepository, DepartementRepository departementRepository) {
         return args -> {
 
