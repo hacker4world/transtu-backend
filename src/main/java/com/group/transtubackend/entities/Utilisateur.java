@@ -1,9 +1,7 @@
-package com.group.transtubackend.authentication.entities;
+package com.group.transtubackend.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -11,13 +9,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    private String firstName;
-    private String lastName;
+    private int matricule;
+    private String nom;
+    private String prenom;
     private String email;
     private String password;
     private String role;

@@ -1,7 +1,6 @@
-package com.group.transtubackend.authentication.entities;
+package com.group.transtubackend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,11 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Avoir_defaillance
+public class Defaillance
 {
     @Id
-    private String matricule;
-    private String code_defaillance;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int matricule;
     private int nombre_jour;
     private int anne_debut;
     private int anne_fin;
@@ -26,9 +25,11 @@ public class Avoir_defaillance
     private String mois_fin;
     private int nbre_heure;
 
-    public Avoir_defaillance(String matricule, String code_defaillance, int nombre_jour, int anne_debut, int anne_fin, int heure_debut, int heure_fin, String jour_debut, String jour_fin, String mois_debut, String mois_fin, int nbre_heure) {
-        this.matricule = matricule;
-        this.code_defaillance = code_defaillance;
+    @ManyToOne
+    @JoinColumn(name = "agent_id")
+    private Agent agent;
+
+    public Defaillance(int nombre_jour, int anne_debut, int anne_fin, int heure_debut, int heure_fin, String jour_debut, String jour_fin, String mois_debut, String mois_fin, int nbre_heure) {
         this.nombre_jour = nombre_jour;
         this.anne_debut = anne_debut;
         this.anne_fin = anne_fin;

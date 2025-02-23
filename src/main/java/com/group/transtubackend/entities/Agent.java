@@ -1,6 +1,8 @@
-package com.group.transtubackend.authentication.entities;
+package com.group.transtubackend.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +16,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class Agent {
     @Id
-    private String matricule;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int matricule;
     private String nom;
     private String prenom;
     private Date date_naiss;
@@ -23,8 +26,7 @@ public class Agent {
     private String code_grade;
     private String code_service;
 
-    public Agent(String matricule, String nom, String prenom, Date date_naiss, String situation_familiale, String code_emploi_assure, String code_grade, String code_service) {
-        this.matricule = matricule;
+    public Agent(String nom, String prenom, Date date_naiss, String situation_familiale, String code_emploi_assure, String code_grade, String code_service) {
         this.nom = nom;
         this.prenom = prenom;
         this.date_naiss = date_naiss;

@@ -1,6 +1,8 @@
-package com.group.transtubackend.authentication.entities;
+package com.group.transtubackend.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,28 +12,29 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Bareme_tour_service {
+public class TourService {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int code_service;
     private int anne;
     private int mois;
     private int jour;
-    private String type_bareme;
-    private String code_service;
+    private String type_bareme; //sif, chtee, romthan;
     private String numero_tour_service;
-    private String travail_assure;
-    private String code_jour_bareme;
+    private String travail_assure; //continue walle
+    private String code_jour_bareme; //na3rech
     private int heure_jour;
     private int heure_nuit;
     private String panier;
     private String code_etat_enregistrement;
 
-    public Bareme_tour_service(int anne, int mois, int jour, String type_bareme, String code_service, String numero_tour_service, String travail_assure, String code_jour_bareme, int heure_jour, int heure_nuit, String panier, String code_etat_enregistrement) {
+
+
+    public TourService(int anne, int mois, int jour, String type_bareme, String numero_tour_service, String travail_assure, String code_jour_bareme, int heure_jour, int heure_nuit, String panier, String code_etat_enregistrement) {
         this.anne = anne;
         this.mois = mois;
         this.jour = jour;
         this.type_bareme = type_bareme;
-        this.code_service = code_service;
         this.numero_tour_service = numero_tour_service;
         this.travail_assure = travail_assure;
         this.code_jour_bareme = code_jour_bareme;

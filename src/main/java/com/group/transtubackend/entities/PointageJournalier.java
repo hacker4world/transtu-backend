@@ -1,7 +1,6 @@
-package com.group.transtubackend.authentication.entities;
+package com.group.transtubackend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +9,10 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Avoir_pointage_journalier {
+public class PointageJournalier {
     @Id
-    private String matricule;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int matricule;
     private int anne;
     private int mois;
     private int jour;
@@ -22,8 +22,11 @@ public class Avoir_pointage_journalier {
     private int code_service;
     private int num_service;
 
-    public Avoir_pointage_journalier(String matricule, int anne, int mois, int jour, int heure_jour, int heure_nuit, int heure_continue, int code_service, int num_service) {
-        this.matricule = matricule;
+    @ManyToOne
+    @JoinColumn(name = "agent_id")
+    private Agent agent;
+
+    public PointageJournalier(int anne, int mois, int jour, int heure_jour, int heure_nuit, int heure_continue, int code_service, int num_service) {
         this.anne = anne;
         this.mois = mois;
         this.jour = jour;

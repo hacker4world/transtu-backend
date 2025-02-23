@@ -1,19 +1,18 @@
-package com.group.transtubackend.authentication.entities;
+package com.group.transtubackend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-
-public class Pointage_mensuel {
+public class PointageHebdomadaire {
     @Id
-    private String matricule;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int matricule;
     private int heure_ferie;
     private int heure_normale;
     private int heure_nuit;
@@ -23,8 +22,11 @@ public class Pointage_mensuel {
     private int mois;
     private int jour;
 
-    public Pointage_mensuel(String matricule, int heure_ferie, int heure_normale, int heure_nuit, int heure_25, int heure_50, int anne, int mois, int jour) {
-        this.matricule = matricule;
+    @ManyToOne
+    @JoinColumn(name = "agent_id")
+    private Agent agent;
+
+    public PointageHebdomadaire(int heure_ferie, int heure_normale, int heure_nuit, int heure_25, int heure_50, int anne, int mois, int jour) {
         this.heure_ferie = heure_ferie;
         this.heure_normale = heure_normale;
         this.heure_nuit = heure_nuit;

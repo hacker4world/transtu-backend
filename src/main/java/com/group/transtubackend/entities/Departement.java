@@ -1,10 +1,9 @@
-package com.group.transtubackend.authentication.entities;
+package com.group.transtubackend.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -21,5 +20,5 @@ public class Departement {
     private String address;
 
     @OneToMany(mappedBy = "departement")
-    private List<User> users;
+    private List<Utilisateur> utilisateurs;
 }

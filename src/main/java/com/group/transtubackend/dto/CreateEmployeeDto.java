@@ -1,8 +1,6 @@
-package com.group.transtubackend.gestion_employee.dto;
+package com.group.transtubackend.dto;
 
 import lombok.Getter;
-
-import java.util.UUID;
 
 @Getter
 public class CreateEmployeeDto {

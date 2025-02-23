@@ -1,7 +1,6 @@
-package com.group.transtubackend.authentication.entities;
+package com.group.transtubackend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +9,10 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Avoir_conge {
+public class Conge {
     @Id
-    private String matricule;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int matricule;
     private int anne_debut;
     private int mois_debut;
     private int jour_debut;
@@ -22,8 +22,11 @@ public class Avoir_conge {
     private int nbr_jour;
     private String code_conge;
 
-    public Avoir_conge(String matricule, int anne_debut, int mois_debut, int jour_debut, int anne_fin, int mois_fin, int jour_fin, int nbr_jour, String code_conge) {
-        this.matricule = matricule;
+    @ManyToOne
+    @JoinColumn(name = "agent_id")
+    private Agent agent;
+
+    public Conge(int anne_debut, int mois_debut, int jour_debut, int anne_fin, int mois_fin, int jour_fin, int nbr_jour, String code_conge) {
         this.anne_debut = anne_debut;
         this.mois_debut = mois_debut;
         this.jour_debut = jour_debut;

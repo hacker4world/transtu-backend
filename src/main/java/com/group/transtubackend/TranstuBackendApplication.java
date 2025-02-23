@@ -1,9 +1,9 @@
 package com.group.transtubackend;
 
-import com.group.transtubackend.authentication.entities.Departement;
-import com.group.transtubackend.authentication.entities.User;
-import com.group.transtubackend.authentication.repositories.DepartementRepository;
-import com.group.transtubackend.authentication.repositories.UserRepository;
+import com.group.transtubackend.entities.Departement;
+import com.group.transtubackend.entities.Utilisateur;
+import com.group.transtubackend.repositories.DepartementRepository;
+import com.group.transtubackend.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -42,7 +42,7 @@ public class TranstuBackendApplication {
 
             departementRepository.save(departement);
 
-            User user = User.builder()
+            Utilisateur utilisateur = Utilisateur.builder()
                     .firstName("aziz")
                     .lastName("arfaoui")
                     .email("aziz@gmail.com")
@@ -51,7 +51,7 @@ public class TranstuBackendApplication {
                     .departement(departement)
                     .build();
 
-            userRepository.save(user);
+            userRepository.save(utilisateur);
 
             System.out.println("user created");
         };
