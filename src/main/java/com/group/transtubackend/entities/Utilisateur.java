@@ -18,6 +18,7 @@ public class Utilisateur {
     private String email;
     private String password;
     private String role;
+    private String code_reset;
 
     @ManyToOne
     @JoinColumn(name = "departement_id")

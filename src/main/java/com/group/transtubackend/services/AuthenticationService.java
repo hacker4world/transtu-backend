@@ -13,5 +13,22 @@ import java.util.Optional;
 
 @Service
 public class AuthenticationService {
+    @Autowired
+    private  UserRepository userRepository;
+
+
+
+
+    public String login(LoginDto loginDto) {
+        Optional<Utilisateur> userOptional = userRepository.findByEmail(loginDto.getEmail());
+
+        if (userOptional.isEmpty()) {
+          Utilisateur user= userOptional.get();
+          if (user.getPassword().equals(loginDto.getPassword()))
+            return "login avec succee";
+        }
+
+            return  "compte  non trouver";
+    }
 
 }

@@ -1,8 +1,12 @@
 package com.group.transtubackend.dto;
 
 import lombok.Getter;
+
 @Getter
-public class LoginDto {
+public class ResetPasswordDto {
     private String email;
-    private String password;
+    private String newPassword;
+    private String resetCode;
+
+
 }

@@ -30,7 +30,7 @@ public class TranstuBackendApplication {
             }
         };
     }
-
+/*
     @Bean
     public CommandLineRunner commandLineRunner(UserRepository userRepository, DepartementRepository departementRepository) {
         return args -> {
@@ -43,8 +43,8 @@ public class TranstuBackendApplication {
             departementRepository.save(departement);
 
             Utilisateur utilisateur = Utilisateur.builder()
-                    .firstName("aziz")
-                    .lastName("arfaoui")
+                    .nom("aziz")
+                    .prenom("arfaoui")
                     .email("aziz@gmail.com")
                     .password("12345678")
                     .role("inspector")
@@ -57,5 +57,5 @@ public class TranstuBackendApplication {
         };
 
     }
-
+*/
 }
