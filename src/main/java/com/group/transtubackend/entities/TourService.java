@@ -1,9 +1,6 @@
 package com.group.transtubackend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +25,13 @@ public class TourService {
     private String panier;
     private String code_etat_enregistrement;
 
+    @ManyToOne
+    @JoinColumn(name = "matricule_chauffeur")
+    private Agent chauffeur;
 
+    @ManyToOne
+    @JoinColumn(name = "matricule_receveur")
+    private Agent receveur;
 
     public TourService(int anne, int mois, int jour, String type_bareme, String numero_tour_service, String travail_assure, String code_jour_bareme, int heure_jour, int heure_nuit, String panier, String code_etat_enregistrement) {
         this.anne = anne;

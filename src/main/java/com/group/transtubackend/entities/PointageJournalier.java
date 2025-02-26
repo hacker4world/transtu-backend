@@ -21,12 +21,13 @@ public class PointageJournalier {
     private int heure_continue;
     private int code_service;
     private int num_service;
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "agent_id")
     private Agent agent;
 
-    public PointageJournalier(int anne, int mois, int jour, int heure_jour, int heure_nuit, int heure_continue, int code_service, int num_service) {
+    public PointageJournalier(int anne, int mois, int jour, int heure_jour, int heure_nuit, int heure_continue, int code_service, int num_service, String type) {
         this.anne = anne;
         this.mois = mois;
         this.jour = jour;
@@ -35,5 +36,6 @@ public class PointageJournalier {
         this.heure_continue = heure_continue;
         this.code_service = code_service;
         this.num_service = num_service;
+        this.type = type;
     }
 }
