@@ -2,11 +2,13 @@ package com.group.transtubackend.controllers;
 
 
 import com.group.transtubackend.dto.LoginDto;
+import com.group.transtubackend.dto.ResetPasswordDto;
+import com.group.transtubackend.dto.SendPasswordResetEmailDto;
 import com.group.transtubackend.services.AuthenticationService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/auth")
@@ -17,9 +19,14 @@ public class AuthenticationController {
     public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-@GetMapping("/login")
-    public String login(LoginDto loginDto)
-{
-    return authenticationService.login(loginDto);
-}
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto)
+    {
+        return authenticationService.login(loginDto);
+    }
+
+    @PostMapping("send-reset-email")
+    public ResponseEntity<String> sendResetEmail(@RequestBody SendPasswordResetEmailDto resetPasswordDto) throws MessagingException {
+        return authenticationService.resetPassword(resetPasswordDto);
+    }
 }
