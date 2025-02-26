@@ -12,12 +12,10 @@ import java.util.Optional;
 @Service
 public class GestionAgentsService {
 
-    private final GestionAgentsService gestionAgentsService;
     private final AgentRepository agentRepository;
 
     @Autowired
-    public GestionAgentsService(GestionAgentsService gestionAgentsService, AgentRepository agentRepository) {
-        this.gestionAgentsService = gestionAgentsService;
+    public GestionAgentsService(AgentRepository agentRepository) {
         this.agentRepository = agentRepository;
     }
 

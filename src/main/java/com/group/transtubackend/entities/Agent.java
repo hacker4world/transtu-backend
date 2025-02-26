@@ -23,8 +23,6 @@ public class Agent {
     private String code_emploi_assure;
     private String code_grade;
     private String role;
-    @OneToMany(mappedBy = "agent")
-    private List<TourService> tourServices;
 
     @ManyToOne
     @JoinColumn(name = "code_departement")
