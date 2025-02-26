@@ -1,9 +1,6 @@
 package com.group.transtubackend.services;
 
-import com.group.transtubackend.dto.ApiResponse;
-import com.group.transtubackend.dto.LoginDto;
-import com.group.transtubackend.dto.LoginResponseDto;
-import com.group.transtubackend.dto.SendPasswordResetEmailDto;
+import com.group.transtubackend.dto.*;
 import com.group.transtubackend.entities.Utilisateur;
 import com.group.transtubackend.repositories.UserRepository;
 import jakarta.mail.MessagingException;
@@ -50,6 +47,22 @@ public class AuthenticationService {
         emailService.sendPasswordResetEmail(resetData.getEmail(), code);
 
         return ResponseEntity.status(200).body("Password reset email has been sent");
+    }
+
+    public ResponseEntity<String> changePassword(ChangePasswordDto changePasswordDto) {
+        Optional<Utilisateur> userOptional = userRepository.findByEmail(changePasswordDto.getEmail());
+
+        if (userOptional.isEmpty()) return ResponseEntity.status(404).body("Account not found");
+
+        Utilisateur user = userOptional.get();
+
+        if (!user.getCode_reset().equals(changePasswordDto.getCode())) return ResponseEntity.status(403).body("Code incorrect");
+
+        user.setPassword(changePasswordDto.getNewPassword());
+
+        userRepository.save(user);
+
+        return ResponseEntity.status(200).body("Password changed successfully");
     }
 
     private static int generateFiveDigitRandomNumber() {

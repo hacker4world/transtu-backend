@@ -1,6 +1,7 @@
 package com.group.transtubackend.controllers;
 
 
+import com.group.transtubackend.dto.ChangePasswordDto;
 import com.group.transtubackend.dto.LoginDto;
 import com.group.transtubackend.dto.ResetPasswordDto;
 import com.group.transtubackend.dto.SendPasswordResetEmailDto;
@@ -29,4 +30,10 @@ public class AuthenticationController {
     public ResponseEntity<String> sendResetEmail(@RequestBody SendPasswordResetEmailDto resetPasswordDto) throws MessagingException {
         return authenticationService.resetPassword(resetPasswordDto);
     }
+
+    @PostMapping("reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ChangePasswordDto resetPasswordDto) {
+        return authenticationService.changePassword(resetPasswordDto);
+    }
+
 }
