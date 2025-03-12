@@ -1,10 +1,7 @@
 package com.group.transtubackend.controllers;
 
 
-import com.group.transtubackend.dto.ChangePasswordDto;
-import com.group.transtubackend.dto.LoginDto;
-import com.group.transtubackend.dto.ResetPasswordDto;
-import com.group.transtubackend.dto.SendPasswordResetEmailDto;
+import com.group.transtubackend.dto.*;
 import com.group.transtubackend.services.AuthenticationService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +18,18 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto)
+    public ResponseEntity<ApiResponse<String>> login(@RequestBody LoginDto loginDto)
     {
         return authenticationService.login(loginDto);
     }
 
     @PostMapping("send-reset-email")
-    public ResponseEntity<String> sendResetEmail(@RequestBody SendPasswordResetEmailDto resetPasswordDto) throws MessagingException {
+    public ResponseEntity<ApiResponse<String>> sendResetEmail(@RequestBody SendPasswordResetEmailDto resetPasswordDto) throws MessagingException {
         return authenticationService.resetPassword(resetPasswordDto);
     }
 
     @PostMapping("reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody ChangePasswordDto resetPasswordDto) {
+    public ResponseEntity<ApiResponse<String>> resetPassword(@RequestBody ChangePasswordDto resetPasswordDto) {
         return authenticationService.changePassword(resetPasswordDto);
     }
 

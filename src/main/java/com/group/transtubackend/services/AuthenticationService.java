@@ -18,53 +18,81 @@ public class AuthenticationService {
     @Autowired
     private EmailService emailService;
 
-    public ResponseEntity<String> login(LoginDto loginDto) {
+    public ResponseEntity<ApiResponse<String>> login(LoginDto loginDto) {
         Optional<Utilisateur> userOptional = userRepository.findByEmail(loginDto.getEmail());
 
-        if (userOptional.isEmpty()) return ResponseEntity.status(403).body("Email or password incorrect");
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(403)
+                    .body(ApiResponse.<String>builder()
+                            .message("Email or password incorrect")
+                            .build());
+        }
 
         Utilisateur user = userOptional.get();
 
-        if (!user.getPassword().equals(loginDto.getPassword())) return ResponseEntity.status(403).body("Email or password incorrect");
+        if (!user.getPassword().equals(loginDto.getPassword())) {
+            return ResponseEntity.status(403)
+                    .body(ApiResponse.<String>builder()
+                            .message("Email or password incorrect")
+                            .build());
+        }
 
-        return ResponseEntity.status(200).body("User logged in");
-
+        return ResponseEntity.status(200)
+                .body(ApiResponse.<String>builder()
+                        .message("User logged in")
+                        .build());
     }
 
-    public ResponseEntity<String> resetPassword(SendPasswordResetEmailDto resetData) throws MessagingException {
+    public ResponseEntity<ApiResponse<String>> resetPassword(SendPasswordResetEmailDto resetData) throws MessagingException {
         Optional<Utilisateur> userOptional = userRepository.findByEmail(resetData.getEmail());
 
-        if (userOptional.isEmpty()) return ResponseEntity.status(404).body("Email incorrect");
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(404)
+                    .body(ApiResponse.<String>builder()
+                            .message("Email incorrect")
+                            .build());
+        }
 
         Utilisateur user = userOptional.get();
-
         String code = String.valueOf(generateFiveDigitRandomNumber());
-
         user.setCode_reset(code);
-
         userRepository.save(user);
 
         emailService.sendPasswordResetEmail(resetData.getEmail(), code);
 
-        return ResponseEntity.status(200).body("Password reset email has been sent");
+        return ResponseEntity.status(200)
+                .body(ApiResponse.<String>builder()
+                        .message("Password reset email has been sent")
+                        .build());
     }
 
-    public ResponseEntity<String> changePassword(ChangePasswordDto changePasswordDto) {
+    public ResponseEntity<ApiResponse<String>> changePassword(ChangePasswordDto changePasswordDto) {
         Optional<Utilisateur> userOptional = userRepository.findByEmail(changePasswordDto.getEmail());
 
-        if (userOptional.isEmpty()) return ResponseEntity.status(404).body("Account not found");
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(404)
+                    .body(ApiResponse.<String>builder()
+                            .message("Account not found")
+                            .build());
+        }
 
         Utilisateur user = userOptional.get();
 
-        if (!user.getCode_reset().equals(changePasswordDto.getCode())) return ResponseEntity.status(403).body("Code incorrect");
+        if (!user.getCode_reset().equals(changePasswordDto.getCode())) {
+            return ResponseEntity.status(403)
+                    .body(ApiResponse.<String>builder()
+                            .message("Code incorrect")
+                            .build());
+        }
 
         user.setPassword(changePasswordDto.getNewPassword());
-
         userRepository.save(user);
 
-        return ResponseEntity.status(200).body("Password changed successfully");
+        return ResponseEntity.status(200)
+                .body(ApiResponse.<String>builder()
+                        .message("Password changed successfully")
+                        .build());
     }
-
     private static int generateFiveDigitRandomNumber() {
         Random random = new Random();
         return 10000 + random.nextInt(90000);

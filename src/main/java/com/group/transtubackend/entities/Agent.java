@@ -22,7 +22,7 @@ public class Agent {
     private String situation_familiale;
     private String code_emploi_assure;
     private String code_grade;
-    private String role;
+    private String role;    
 
     @ManyToOne
     @JoinColumn(name = "code_departement")
