@@ -4,6 +4,7 @@ import com.group.transtubackend.dto.ApiResponse;
 import com.group.transtubackend.dto.CreateAgentDto;
 import com.group.transtubackend.dto.LoginResponseDto;
 import com.group.transtubackend.dto.CreateEmployeeDto;
+import com.group.transtubackend.entities.Agent;
 import com.group.transtubackend.services.GestionAgentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,11 @@ public class GestionAgentsController {
     public GestionAgentsController(GestionAgentsService gestionAgentsService) {
         this.gestionAgentsService = gestionAgentsService;
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<Agent>> getAllAgents() {
+        List<Agent> agents = gestionAgentsService.getAllAgents();
+        return ResponseEntity.ok(agents);
+    }
 
     @PostMapping("/add")
     public ResponseEntity<String> addAgent(@RequestBody CreateAgentDto agentData) {
@@ -30,5 +36,10 @@ public class GestionAgentsController {
     public ResponseEntity<String> removeAgent(@PathVariable Long matricule) {
         return gestionAgentsService.removeAgent(matricule);
     }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateAgent(@PathVariable Long id, @RequestBody CreateAgentDto agentData) {
+        return gestionAgentsService.UpdateAgent(id, agentData);
+    }
+    }
 
-}
+
