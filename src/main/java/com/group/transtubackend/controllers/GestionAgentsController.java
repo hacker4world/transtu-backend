@@ -40,6 +40,10 @@ public class GestionAgentsController {
     public ResponseEntity<String> updateAgent(@PathVariable Long id, @RequestBody CreateAgentDto agentData) {
         return gestionAgentsService.UpdateAgent(id, agentData);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Agent> getAgentById(@PathVariable Long id) {
+        return gestionAgentsService.getAgentById(id);
+    }
     }
 
 

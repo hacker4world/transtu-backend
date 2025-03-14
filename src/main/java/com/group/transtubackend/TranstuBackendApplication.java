@@ -30,31 +30,29 @@ public class TranstuBackendApplication {
             }
         };
     }
+    @Bean
+   public CommandLineRunner commandLineRunner(UserRepository userRepository, DepartementRepository departementRepository) {
+       return args -> {
 
-//    @Bean
-//    public CommandLineRunner commandLineRunner(UserRepository userRepository, DepartementRepository departementRepository) {
-//        return args -> {
-//
-//            Departement departement = Departement.builder()
-//                    .name("Passage")
-//                    .address("passage")
-//                    .build();
-//
-//            departementRepository.save(departement);
-//
-//            Utilisateur utilisateur = Utilisateur.builder()
-//                    .nom("aziz")
-//                    .prenom("arfaoui")
-//                    .email("aziz@gmail.com")
-//                    .password("12345678")
-//                    .role("inspector")
-//                    .departement(departement)
-//                    .build();
-//
-//            userRepository.save(utilisateur);
-//
-//            System.out.println("user created");
-//        };
-//
-//    }
+           Departement departement = Departement.builder()
+                    .name("Passage")
+                   .address("passage")                    .build();
+
+            departementRepository.save(departement);
+
+           Utilisateur utilisateur = Utilisateur.builder()
+                  .nom("aziz")
+                   .prenom("arfaoui")
+                    .email("aziz@gmail.com")
+                   .password("12345678")
+                   .role("inspector")
+                   .departement(departement)
+                   .build();
+
+          userRepository.save(utilisateur);
+
+            System.out.println("user created");
+        };
+
+    }
 }

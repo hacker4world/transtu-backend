@@ -69,4 +69,13 @@ public class GestionAgentsService {
     public List<Agent> getAllAgents() {
         return agentRepository.findAll();
     }
+    public ResponseEntity<Agent> getAgentById(Long id) {
+        Optional<Agent> agent = agentRepository.findById(id);
+
+        if (agent.isPresent()) {
+            return ResponseEntity.ok(agent.get());
+        } else {
+            return ResponseEntity.status(404).body(null);
+        }
+    }
 }
