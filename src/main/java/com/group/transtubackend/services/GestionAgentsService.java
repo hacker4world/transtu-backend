@@ -38,7 +38,7 @@ public class GestionAgentsService {
 
     }
 
-    public ResponseEntity<String> removeAgent(Long matricule) {
+    public ResponseEntity<String> removeAgent(int matricule) {
         Optional<Agent> agent = agentRepository.findById(matricule);
 
         if (agent.isEmpty()) return ResponseEntity.status(404).body("Agent non trouvé");
@@ -47,7 +47,7 @@ public class GestionAgentsService {
 
         return ResponseEntity.ok("Agent supprimé avec succès");
     }
-    public ResponseEntity<String> UpdateAgent(Long id, CreateAgentDto agentData) {
+    public ResponseEntity<String> UpdateAgent(int id, CreateAgentDto agentData) {
         Optional<Agent> existingAgent = agentRepository.findById(id);
 
         if (existingAgent.isPresent()) {
@@ -69,7 +69,7 @@ public class GestionAgentsService {
     public List<Agent> getAllAgents() {
         return agentRepository.findAll();
     }
-    public ResponseEntity<Agent> getAgentById(Long id) {
+    public ResponseEntity<Agent> getAgentById(int id) {
         Optional<Agent> agent = agentRepository.findById(id);
 
         if (agent.isPresent()) {

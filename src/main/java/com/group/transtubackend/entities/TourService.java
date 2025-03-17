@@ -46,4 +46,20 @@ public class TourService {
         this.panier = panier;
         this.code_etat_enregistrement = code_etat_enregistrement;
     }
+
+    public TourService(Agent receveur, String code_etat_enregistrement, Agent chauffeur, String panier, int heure_nuit, int heure_jour, String code_jour_bareme, String travail_assure, String numero_tour_service, String type_bareme, int jour, int mois, int anne) {
+        this.receveur = receveur;
+        this.code_etat_enregistrement = code_etat_enregistrement;
+        this.chauffeur = chauffeur;
+        this.panier = panier;
+        this.heure_nuit = heure_nuit;
+        this.heure_jour = heure_jour;
+        this.code_jour_bareme = code_jour_bareme;
+        this.travail_assure = travail_assure;
+        this.numero_tour_service = numero_tour_service;
+        this.type_bareme = type_bareme;
+        this.jour = jour;
+        this.mois = mois;
+        this.anne = anne;
+    }
 }

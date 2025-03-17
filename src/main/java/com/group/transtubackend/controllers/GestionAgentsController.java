@@ -33,15 +33,15 @@ public class GestionAgentsController {
     }
 
     @DeleteMapping("/remove/{matricule}")
-    public ResponseEntity<String> removeAgent(@PathVariable Long matricule) {
+    public ResponseEntity<String> removeAgent(@PathVariable int matricule) {
         return gestionAgentsService.removeAgent(matricule);
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateAgent(@PathVariable Long id, @RequestBody CreateAgentDto agentData) {
+    public ResponseEntity<String> updateAgent(@PathVariable int id, @RequestBody CreateAgentDto agentData) {
         return gestionAgentsService.UpdateAgent(id, agentData);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Agent> getAgentById(@PathVariable Long id) {
+    public ResponseEntity<Agent> getAgentById(@PathVariable int id) {
         return gestionAgentsService.getAgentById(id);
     }
     }
