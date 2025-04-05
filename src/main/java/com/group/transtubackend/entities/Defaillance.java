@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Entity
 @Getter
 @Setter
@@ -15,30 +18,23 @@ public class Defaillance
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int matricule;
     private int nombre_jour;
-    private int anne_debut;
-    private int anne_fin;
-    private int heure_debut;
-    private int heure_fin;
-    private String jour_debut;
-    private String jour_fin;
-    private String mois_debut;
-    private String mois_fin;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
+    private LocalTime heureDebut;
+    private LocalTime heureFin;
     private int nbre_heure;
 
     @ManyToOne
     @JoinColumn(name = "agent_id")
     private Agent agent;
 
-    public Defaillance(int nombre_jour, int anne_debut, int anne_fin, int heure_debut, int heure_fin, String jour_debut, String jour_fin, String mois_debut, String mois_fin, int nbre_heure) {
+    public Defaillance(int nombre_jour, LocalDate dateDebut, LocalDate dateFin, LocalTime heureDebut, LocalTime heureFin, int nbre_heure, Agent agent) {
         this.nombre_jour = nombre_jour;
-        this.anne_debut = anne_debut;
-        this.anne_fin = anne_fin;
-        this.heure_debut = heure_debut;
-        this.heure_fin = heure_fin;
-        this.jour_debut = jour_debut;
-        this.jour_fin = jour_fin;
-        this.mois_debut = mois_debut;
-        this.mois_fin = mois_fin;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
         this.nbre_heure = nbre_heure;
+        this.agent = agent;
     }
 }

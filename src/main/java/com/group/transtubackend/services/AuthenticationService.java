@@ -18,10 +18,11 @@ public class AuthenticationService {
     @Autowired
     private EmailService emailService;
 
-    public ResponseEntity<ApiResponse<String>> login(LoginDto loginDto) {
+    public ResponseEntity<ApiResponse<?>> login(LoginDto loginDto) {
         Optional<Utilisateur> userOptional = userRepository.findByEmail(loginDto.getEmail());
 
         if (userOptional.isEmpty()) {
+
             return ResponseEntity.status(403)
                     .body(ApiResponse.<String>builder()
                             .message("Email or password incorrect")
@@ -38,8 +39,17 @@ public class AuthenticationService {
         }
 
         return ResponseEntity.status(200)
-                .body(ApiResponse.<String>builder()
+                .body(ApiResponse.<LoginResponseDto>builder()
                         .message("User logged in")
+                        .data(LoginResponseDto.builder()
+                                .id(user.getMatricule())
+                                .firstName(user.getNom())
+                                .lastName(user.getPrenom())
+                                .email(user.getEmail())
+                                .role(user.getRole())
+                                .departmentName(user.getDepartement().getName())
+                                .departmentId(user.getDepartement().getId())
+                                .build())
                         .build());
     }
 
@@ -58,7 +68,7 @@ public class AuthenticationService {
         user.setCode_reset(code);
         userRepository.save(user);
 
-        emailService.sendPasswordResetEmail(resetData.getEmail(), code);
+        emailService.sendPasswordResetEmail(user.getNom(), user.getPrenom(), user.getEmail(), code);
 
         return ResponseEntity.status(200)
                 .body(ApiResponse.<String>builder()

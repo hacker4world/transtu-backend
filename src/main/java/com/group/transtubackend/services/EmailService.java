@@ -21,7 +21,7 @@ public class EmailService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendPasswordResetEmail(String email, String passwordResetCode) throws MessagingException {
+    public void sendPasswordResetEmail(String firstName, String lastName, String email, String passwordResetCode) throws MessagingException {
         try {
 
             // creating email instance
@@ -36,7 +36,9 @@ public class EmailService {
             Context context = new Context();
 
             // choosing the HTML template for the email and setting the name and code variables
-            context.setVariable("code", passwordResetCode);
+            context.setVariable("firstName", firstName);
+            context.setVariable("lastName", lastName);
+            context.setVariable("resetCode", passwordResetCode);
 
             String htmlContent = templateEngine.process("password_reset", context);
 

@@ -1,11 +1,18 @@
 package com.group.transtubackend.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
+@AllArgsConstructor
 @Getter
-public class CreateAgentDto {
+@Setter
+@Builder
+public class AgentResponse {
+    private int matricule;
     private String nom;
     private String prenom;
     private Date date_naiss;
@@ -13,5 +20,5 @@ public class CreateAgentDto {
     private String code_emploi_assure;
     private String code_grade;
     private String role;
-    private int adminId;
+    private String departement;
 }

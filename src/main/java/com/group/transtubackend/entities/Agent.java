@@ -22,7 +22,7 @@ public class Agent {
     private String situation_familiale;
     private String code_emploi_assure;
     private String code_grade;
-    private String role;    
+    private String role;
 
     @ManyToOne
     @JoinColumn(name = "code_departement")
@@ -37,7 +37,7 @@ public class Agent {
     @OneToMany(mappedBy = "agent")
     private List<Conge> conges;
 
-    public Agent(String nom, String prenom, Date date_naiss, String situation_familiale, String code_emploi_assure, String code_grade, String role) {
+    public Agent(String nom, String prenom, Date date_naiss, String situation_familiale, String code_emploi_assure, String code_grade, String role, Departement departement) {
         this.nom = nom;
         this.prenom = prenom;
         this.date_naiss = date_naiss;
@@ -45,5 +45,6 @@ public class Agent {
         this.code_emploi_assure = code_emploi_assure;
         this.code_grade = code_grade;
         this.role = role;
+        this.departement = departement;
     }
 }
