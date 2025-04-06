@@ -2,6 +2,7 @@ package com.group.transtubackend.services;
 
 import com.group.transtubackend.dto.ApiResponse;
 import com.group.transtubackend.dto.DefaillanceDTO;
+import com.group.transtubackend.dto.DefaillanceResponse;
 import com.group.transtubackend.entities.Agent;
 import com.group.transtubackend.entities.Defaillance;
 import com.group.transtubackend.repositories.AgentRepository;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -75,5 +78,44 @@ public class DefaillanceService {
         defaillanceRepository.deleteById(id);
         return ResponseEntity.ok(new ApiResponse<>("Défaillance supprimée avec succès"));
     }
+
+
+    public List<DefaillanceResponse> getAllDefaillances() {
+        List<Defaillance> defaillances = defaillanceRepository.findAll();
+
+        return defaillances.stream()
+                .map(defaillance -> new DefaillanceResponse(
+                        defaillance.getMatricule(),
+                        defaillance.getNombre_jour(),
+                        defaillance.getDateDebut(),
+                        defaillance.getDateFin(),
+                        defaillance.getHeureDebut(),
+                        defaillance.getHeureFin(),
+                        defaillance.getNbre_heure(),
+                        defaillance.getAgent().getMatricule(),
+                        defaillance.getAgent().getNom(),
+                        defaillance.getAgent().getPrenom()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public DefaillanceResponse getDefaillanceById(int id) {
+        return defaillanceRepository.findById(id)
+                .map(defaillance -> new DefaillanceResponse(
+                        defaillance.getMatricule(),
+                        defaillance.getNombre_jour(),
+                        defaillance.getDateDebut(),
+                        defaillance.getDateFin(),
+                        defaillance.getHeureDebut(),
+                        defaillance.getHeureFin(),
+                        defaillance.getNbre_heure(),
+                        defaillance.getAgent().getMatricule(),
+                        defaillance.getAgent().getNom(),
+                        defaillance.getAgent().getPrenom()
+                ))
+                .orElse(null);
+    }
+
+
 
 }
