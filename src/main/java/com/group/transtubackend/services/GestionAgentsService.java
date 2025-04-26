@@ -7,7 +7,6 @@ import com.group.transtubackend.entities.Agent;
 import com.group.transtubackend.entities.Utilisateur;
 import com.group.transtubackend.repositories.AgentRepository;
 import com.group.transtubackend.repositories.UserRepository;
-import jdk.jshell.execution.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,7 @@ public class GestionAgentsService {
                 agentData.getCode_emploi_assure(),
                 agentData.getCode_grade(),
                 agentData.getRole(),
-                utilisateur.get().getDepartement()
+                utilisateur.get().getDistrict()
         );
 
         Agent savedAgent = agentRepository.save(agent);
@@ -90,7 +89,7 @@ public class GestionAgentsService {
                 .code_emploi_assure(agent.getCode_emploi_assure())
                 .code_grade(agent.getCode_grade())
                 .role(agent.getRole())
-                .departement(agent.getDepartement().getName())
+                .departement(agent.getDistrict().getName())
                 .build()).toList();
 
         return ResponseEntity.ok(agentsResponse);

@@ -25,9 +25,4 @@ public class PointageController {
         return pointageService.genererTravailPrevu();
     }
 
-    @GetMapping("/get-tours/{date}")
-    public ResponseEntity<List<TourServiceResponse>> getTours(@PathVariable String date) throws ParseException {
-        return pointageService.getTravailPrevuByDate(date);
-    }
-
 }

@@ -22,5 +22,5 @@ public class Utilisateur {
 
     @ManyToOne
     @JoinColumn(name = "departement_id")
-    private Departement departement;
+    private District district;
 }

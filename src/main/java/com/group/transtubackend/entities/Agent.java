@@ -26,7 +26,7 @@ public class Agent {
 
     @ManyToOne
     @JoinColumn(name = "code_departement")
-    private Departement departement;
+    private District district;
 
     @OneToMany(mappedBy = "agent")
     private List<PointageJournalier> pointageJournaliers;
@@ -37,7 +37,7 @@ public class Agent {
     @OneToMany(mappedBy = "agent")
     private List<Conge> conges;
 
-    public Agent(String nom, String prenom, Date date_naiss, String situation_familiale, String code_emploi_assure, String code_grade, String role, Departement departement) {
+    public Agent(String nom, String prenom, Date date_naiss, String situation_familiale, String code_emploi_assure, String code_grade, String role, District district) {
         this.nom = nom;
         this.prenom = prenom;
         this.date_naiss = date_naiss;
@@ -45,6 +45,6 @@ public class Agent {
         this.code_emploi_assure = code_emploi_assure;
         this.code_grade = code_grade;
         this.role = role;
-        this.departement = departement;
+        this.district = district;
     }
 }

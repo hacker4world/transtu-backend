@@ -47,8 +47,8 @@ public class AuthenticationService {
                                 .lastName(user.getPrenom())
                                 .email(user.getEmail())
                                 .role(user.getRole())
-                                .departmentName(user.getDepartement().getName())
-                                .departmentId(user.getDepartement().getId())
+                                .departmentName(user.getDistrict().getName())
+                                .departmentId(user.getDistrict().getId())
                                 .build())
                         .build());
     }
