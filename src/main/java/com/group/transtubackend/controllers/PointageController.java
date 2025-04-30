@@ -1,14 +1,14 @@
 package com.group.transtubackend.controllers;
 
+import com.group.transtubackend.dto.ApiResponse;
+import com.group.transtubackend.dto.GenererPrevuDto;
 import com.group.transtubackend.dto.TourServiceResponse;
 import com.group.transtubackend.services.PointageService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -20,9 +20,9 @@ public class PointageController {
         this.pointageService = pointageService;
     }
 
-    @GetMapping("/generer-travail-prevu")
-    public ResponseEntity<List<TourServiceResponse>> genererTravailPrevu() throws ParseException {
-        return pointageService.genererTravailPrevu();
+    @PostMapping("/generer")
+    public ResponseEntity<ApiResponse<List<TourServiceResponse>>> genererTravailPrevu(GenererPrevuDto prevuData) {
+        return pointageService.genererTravailPrevu(prevuData);
     }
 
 }

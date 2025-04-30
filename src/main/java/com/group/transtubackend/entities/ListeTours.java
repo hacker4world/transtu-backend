@@ -20,6 +20,8 @@ public class ListeTours {
     private String saison;
     private boolean travail_assure;
     private boolean travail_continue;
+    private int heures_jour;
+    private int heures_nuit;
 
     @ManyToOne
     private District district;

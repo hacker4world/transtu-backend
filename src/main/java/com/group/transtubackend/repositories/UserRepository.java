@@ -9,6 +9,4 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<Utilisateur, Integer> {
     Optional<Utilisateur> findByEmail(String email);
-
-    List<Utilisateur> findAllByDepartement(District district);
 }

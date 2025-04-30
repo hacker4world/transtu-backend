@@ -1,14 +1,14 @@
 package com.group.transtubackend.repositories;
 
-import com.group.transtubackend.entities.Agent;
 import com.group.transtubackend.entities.District;
+import com.group.transtubackend.entities.ListeTours;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
-public interface AgentRepository extends JpaRepository<Agent, Integer> {
-    List<Agent> findByDistrict(District district);
+public interface ListToursRepository extends JpaRepository<ListeTours, Integer> {
+    List<ListeTours> findByDistrictAndJourAndSaison(District district, int jour, String saison);
+
 }

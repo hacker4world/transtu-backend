@@ -21,6 +21,6 @@ public class Utilisateur {
     private String code_reset;
 
     @ManyToOne
-    @JoinColumn(name = "departement_id")
+    @JoinColumn(name = "district_id")
     private District district;
 }

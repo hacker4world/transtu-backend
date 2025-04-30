@@ -19,6 +19,6 @@ public class District {
     private String name;
     private String address;
 
-    @OneToMany(mappedBy = "departement")
+    @OneToMany(mappedBy = "district")
     private List<Utilisateur> utilisateurs;
 }
