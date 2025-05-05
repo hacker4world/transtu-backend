@@ -6,6 +6,7 @@ import com.group.transtubackend.dto.TourServiceResponse;
 import com.group.transtubackend.services.PointageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +21,8 @@ public class PointageController {
         this.pointageService = pointageService;
     }
 
-    @PostMapping("/generer")
-    public ResponseEntity<ApiResponse<List<TourServiceResponse>>> genererTravailPrevu(GenererPrevuDto prevuData) {
+    @PostMapping("/prevu")
+    public ResponseEntity<ApiResponse<List<TourServiceResponse>>> genererTravailPrevu(@RequestBody GenererPrevuDto prevuData) {
         return pointageService.genererTravailPrevu(prevuData);
     }
 

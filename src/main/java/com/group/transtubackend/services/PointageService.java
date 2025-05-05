@@ -57,6 +57,10 @@ public class PointageService {
                 .filter(agent -> agent.getRole().equals("receiver"))
                 .toList());
 
+        System.out.println(tours.size());
+        System.out.println(drivers.size());
+        System.out.println(receivers.size());
+
         Collections.shuffle(drivers);
         Collections.shuffle(receivers);
 
@@ -104,23 +108,23 @@ public class PointageService {
         if ((month == 12 && day >= 21) ||
                 (month == 1 || month == 2) ||
                 (month == 3 && day <= 19)) {
-            return "hiver";
+            return "winter";
         }
         // Spring: March 20 - June 20
         else if ((month == 3 && day >= 20) ||
                 (month == 4 || month == 5) ||
                 (month == 6 && day <= 20)) {
-            return "printemps";
+            return "spring";
         }
         // Summer: June 21 - September 21
         else if ((month == 6 && day >= 21) ||
                 (month == 7 || month == 8) ||
                 (month == 9 && day <= 21)) {
-            return "ete";
+            return "summer";
         }
         // Autumn/Fall: September 22 - December 20
         else {
-            return "automne";
+            return "autumn";
         }
     }
 

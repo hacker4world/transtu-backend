@@ -24,7 +24,7 @@ public class ListeTours {
     private int heures_nuit;
 
     @ManyToOne
+    @JoinColumn(name = "district_id")
     private District district;
-
 
 }

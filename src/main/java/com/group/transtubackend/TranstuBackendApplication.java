@@ -1,5 +1,7 @@
 package com.group.transtubackend;
 
+import com.group.transtubackend.repositories.UserRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -26,29 +28,5 @@ public class TranstuBackendApplication {
         };
     }
 
-//    @Bean
-//   public CommandLineRunner commandLineRunner(UserRepository userRepository, DepartementRepository departementRepository) {
-//       return args -> {
-//
-//           Departement departement = Departement.builder()
-//                    .name("Passage")
-//                   .address("passage")                    .build();
-//
-//            departementRepository.save(departement);
-//
-//           Utilisateur utilisateur = Utilisateur.builder()
-//                  .nom("aziz")
-//                   .prenom("arfaoui")
-//                    .email("aziz@gmail.com")
-//                   .password("12345678")
-//                   .role("inspector")
-//                   .departement(departement)
-//                   .build();
-//
-//          userRepository.save(utilisateur);
-//
-//            System.out.println("user created");
-//        };
-//
-//    }
+
 }
