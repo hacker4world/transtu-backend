@@ -1,13 +1,12 @@
 package com.group.transtubackend.services;
 
-import com.group.transtubackend.dto.ApiResponse;
-import com.group.transtubackend.dto.GenererPrevuDto;
-import com.group.transtubackend.dto.TourServiceResponse;
+import com.group.transtubackend.dto.*;
 import com.group.transtubackend.entities.*;
 import com.group.transtubackend.repositories.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +25,7 @@ public class PointageService {
     public PointageService(AgentRepository agentRepository, DefaillanceRepository defaillanceRepository, CongeRepository congeRepository, ListToursRepository listToursRepository, UserRepository userRepository, TourServiceRepository tourServiceRepository) {
         this.agentRepository = agentRepository;
         this.defaillanceRepository = defaillanceRepository;
-        this.congeRepository = congeRepository;
+        this.congeRepository = congeRepository; 
         this.listToursRepository = listToursRepository;
         this.userRepository = userRepository;
         this.tourServiceRepository = tourServiceRepository;
@@ -45,7 +44,11 @@ public class PointageService {
 
         List<ListeTours> tours = listToursRepository.findByDistrictAndJourAndSaison(district, prevuData.getDayCode(), saison);
 
-        List<Agent> agents = agentRepository.findByDistrict(district);
+        LocalDate targetDate = LocalDate.of(prevuData.getYear(), prevuData.getMonth(), prevuData.getDay());
+
+        List<Agent> agents = agentRepository.findByDistrict(district).stream()
+                .filter(agent -> isAgentAvailableOnDate(agent, targetDate))
+                .toList();
 
         List<Agent> drivers = new java.util.ArrayList<>(agents
                 .stream()
@@ -103,6 +106,36 @@ public class PointageService {
 
     }
 
+    public ResponseEntity<ApiResponse<?>> fetchTours(FetchToursDto data) {
+        Optional<Utilisateur> utilisateur = userRepository.findByEmail(data.getEmail());
+
+        if (utilisateur.isEmpty()) return ResponseEntity.status(401).body(new ApiResponse<>("Email was not found"));
+
+        District district = utilisateur.get().getDistrict();
+
+        List<TourService> tours = tourServiceRepository.findAllByDayAndMonthAndYear(
+                data.getDay(), data.getMonth(), data.getYear()
+        ).stream().filter(tour -> tour.getTour().getDistrict() == district).toList();
+
+        List<TourServiceResponseDto> toursResponse = tours.stream()
+                .map(tour -> {
+                    return TourServiceResponseDto.builder()
+                            .tourId(tour.getId())
+                            .driver(tour.getDriver().getNom())
+                            .receiver(tour.getReceiver().getNom())
+                            .heures_jour(tour.getTour().getHeures_jour())
+                            .heures_nuit(tour.getTour().getHeures_nuit())
+                            .build();
+                }).toList();
+
+        return ResponseEntity.status(200).body(new ApiResponse<>("Tours de services", toursResponse));
+
+    }
+
+//    public ResponseEntity<ApiResponse<Void>> cancelTour() {}
+//    public ResponseEntity<ApiResponse<Void>> markAgentAbsent() {}
+//    public ResponseEntity<ApiResponse<Void>> markAgentLate() {}
+
     private String getSaison(int day, int month) {
         // Winter: December 21 - March 19
         if ((month == 12 && day >= 21) ||
@@ -126,6 +159,27 @@ public class PointageService {
         else {
             return "autumn";
         }
+    }
+
+    private boolean isAgentAvailableOnDate(Agent agent, LocalDate date) {
+        return !hasDefaillanceOnDate(agent, date) && !hasCongeOnDate(agent, date);
+    }
+
+    // Check if agent has a defaillance on the given date
+    private boolean hasDefaillanceOnDate(Agent agent, LocalDate date) {
+        return agent.getDefaillances().stream()
+                .anyMatch(def -> isDateInRange(date, def.getDateDebut(), def.getDateFin()));
+    }
+
+    // Check if agent has a conge on the given date
+    private boolean hasCongeOnDate(Agent agent, LocalDate date) {
+        return agent.getConges().stream()
+                .anyMatch(conge -> isDateInRange(date, conge.getDateDebut(), conge.getDateFin()));
+    }
+
+    // Check if a date falls within a range (inclusive)
+    private boolean isDateInRange(LocalDate date, LocalDate start, LocalDate end) {
+        return !date.isBefore(start) && !date.isAfter(end);
     }
 
 
