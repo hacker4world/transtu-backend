@@ -21,14 +21,18 @@ public class PointageService {
     private final ListToursRepository listToursRepository;
     private final UserRepository userRepository;
     private final TourServiceRepository tourServiceRepository;
+    private final AbsenceRepository absenceRepository;
+    private final LatencyRepository latencyRepository;
 
-    public PointageService(AgentRepository agentRepository, DefaillanceRepository defaillanceRepository, CongeRepository congeRepository, ListToursRepository listToursRepository, UserRepository userRepository, TourServiceRepository tourServiceRepository) {
+    public PointageService(AgentRepository agentRepository, DefaillanceRepository defaillanceRepository, CongeRepository congeRepository, ListToursRepository listToursRepository, UserRepository userRepository, TourServiceRepository tourServiceRepository, AbsenceRepository absenceRepository, LatencyRepository latencyRepository) {
         this.agentRepository = agentRepository;
         this.defaillanceRepository = defaillanceRepository;
         this.congeRepository = congeRepository; 
         this.listToursRepository = listToursRepository;
         this.userRepository = userRepository;
         this.tourServiceRepository = tourServiceRepository;
+        this.absenceRepository = absenceRepository;
+        this.latencyRepository = latencyRepository;
     }
 
     public ResponseEntity<ApiResponse<List<TourServiceResponse>>> genererTravailPrevu(GenererPrevuDto prevuData) {
@@ -75,10 +79,14 @@ public class PointageService {
             TourService tourService = TourService.builder()
                     .driver(drivers.get(i))
                     .receiver(receivers.get(i))
+                    .year(prevuData.getYear())
+                    .month(prevuData.getMonth())
+                    .day(prevuData.getDay())
                     .tour(tour)
                     .build();
 
             toursServices.add(tourService);
+
         }
 
         tourServiceRepository.saveAll(toursServices);
@@ -132,9 +140,65 @@ public class PointageService {
 
     }
 
-//    public ResponseEntity<ApiResponse<Void>> cancelTour() {}
-//    public ResponseEntity<ApiResponse<Void>> markAgentAbsent() {}
-//    public ResponseEntity<ApiResponse<Void>> markAgentLate() {}
+    public ResponseEntity<ApiResponse<Void>> cancelTour(CancelTourDto dto) {
+        Optional<TourService> tour = tourServiceRepository.findById(dto.getTourId());
+
+        if (tour.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Tour not found"));
+
+        tourServiceRepository.delete(tour.get());
+
+        return ResponseEntity.status(200).body(new ApiResponse<>("Tour cancelled"));
+
+    }
+    public ResponseEntity<ApiResponse<Void>> markAgentAbsent(MarkAgentAbsentDto absenceData) {
+        Optional<Agent> agent = agentRepository.findById(absenceData.getAgentId());
+
+        if (agent.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Agent not found"));
+
+        List<Absence> existingAbsences = absenceRepository.findByAgentAndDayAndMonthAndYear(
+                agent.get(), absenceData.getDay(), absenceData.getMonth(), absenceData.getYear()
+        );
+
+        if (!existingAbsences.isEmpty()) return ResponseEntity.status(400).body(new ApiResponse<>("Agent already marked absent in this date"));
+
+        Absence absence = Absence.builder()
+                .agent(agent.get())
+                .day(absenceData.getDay())
+                .month(absenceData.getMonth())
+                .year(absenceData.getYear())
+                .build();
+
+        absenceRepository.save(absence);
+
+        return ResponseEntity.status(200).body(new ApiResponse<>("Agent marked as absent"));
+    }
+
+    public ResponseEntity<ApiResponse<Void>> markAgentLate(MarkAgentLateDto data) {
+        Optional<Agent> agent = agentRepository.findById(data.getAgentId());
+
+        if (agent.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Agent not found"));
+
+        List<Absence> existingLatencies = latencyRepository.findByAgentAndDayAndMonthAndYear(
+                agent.get(), data.getDay(), data.getMonth(), data.getYear()
+        );
+
+        if (!existingLatencies.isEmpty()) return ResponseEntity.status(400).body(new ApiResponse<>("Agent already marked absent in this date"));
+
+        Latency latency = Latency.builder()
+                .agent(agent.get())
+                .day(data.getDay())
+                .month(data.getMonth())
+                .year(data.getYear())
+                .hours(data.getHours())
+                .minutes(data.getMinutes())
+                .build();
+
+        latencyRepository.save(latency);
+
+        return ResponseEntity.status(200).body(new ApiResponse<>("Agent marked as late"));
+    }
+
+//    public ResponseEntity<ApiResponse<Void>> changeAgent() {}
 
     private String getSaison(int day, int month) {
         // Winter: December 21 - March 19
