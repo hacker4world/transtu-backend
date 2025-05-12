@@ -198,7 +198,47 @@ public class PointageService {
         return ResponseEntity.status(200).body(new ApiResponse<>("Agent marked as late"));
     }
 
-//    public ResponseEntity<ApiResponse<Void>> changeAgent() {}
+    public ResponseEntity<ApiResponse<Void>> changeAgent(ChangeAgentDto data) {
+        Optional<TourService> tourService = tourServiceRepository.findById(data.getTourId());
+
+        if (tourService.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Tour not found"));
+
+        Optional<Agent> agentToReplace = agentRepository.findById(data.getAgentId());
+
+        if (agentToReplace.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Agent not found"));
+
+        String agentRole = agentToReplace.get().getRole();
+
+        District district = agentToReplace.get().getDistrict();
+
+        List<Agent> compatibleAgents = agentRepository.findByDistrictAndRole(district, agentRole);
+
+        List<TourService> toursToday = tourServiceRepository.findAllByDayAndMonthAndYear(
+                tourService.get().getDay(), tourService.get().getMonth(), tourService.get().getYear()
+        );
+
+        List<Agent> availableAgents = new ArrayList<>(compatibleAgents.stream()
+                .filter(agent ->
+                        toursToday.stream()
+                                .noneMatch(tour ->
+                                        agent.equals(tour.getDriver()) ||
+                                                agent.equals(tour.getReceiver())
+                                )
+                ).toList());
+
+        if (availableAgents.isEmpty()) return ResponseEntity.status(400).body(new ApiResponse<>("No agents available"));
+
+        Collections.shuffle(availableAgents);
+        Agent randomAgent = availableAgents.get(0);
+
+        if (agentRole.equals("driver")) tourService.get().setDriver(randomAgent);
+        else tourService.get().setReceiver(randomAgent);
+
+        tourServiceRepository.save(tourService.get());
+
+        return ResponseEntity.status(200).body(new ApiResponse<>("Agent has been changed"));
+
+    }
 
     private String getSaison(int day, int month) {
         // Winter: December 21 - March 19

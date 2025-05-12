@@ -41,4 +41,9 @@ public class PointageController {
         return pointageService.markAgentLate(data);
     }
 
+    @PostMapping("change-agent")
+    public ResponseEntity<ApiResponse<Void>> changeAgent(@RequestBody ChangeAgentDto data) {
+        return pointageService.changeAgent(data);
+    }
+
 }

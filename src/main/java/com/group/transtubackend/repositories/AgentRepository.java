@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface AgentRepository extends JpaRepository<Agent, Integer> {
     List<Agent> findByDistrict(District district);
+    List<Agent> findByDistrictAndRole(District district, String role);
 }
