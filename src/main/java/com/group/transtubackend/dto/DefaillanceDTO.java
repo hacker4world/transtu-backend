@@ -11,8 +11,5 @@ public class DefaillanceDTO {
     private int nombre_jour;
     private LocalDate dateDebut;
     private LocalDate dateFin;
-    private LocalTime heureDebut;
-    private LocalTime heureFin;
-    private int nbre_heure;
     private int agentId;
 }

@@ -28,14 +28,20 @@ public class Agent {
     @JoinColumn(name = "code_departement")
     private District district;
 
-    @OneToMany(mappedBy = "agent")
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PointageJournalier> pointageJournaliers;
 
-    @OneToMany(mappedBy = "agent")
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Defaillance> defaillances;
 
-    @OneToMany(mappedBy = "agent")
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Conge> conges;
+
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Absence> absences;
+
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Latency> latencies;
 
     public Agent(String nom, String prenom, Date date_naiss, String situation_familiale, String code_emploi_assure, String code_grade, String role, District district) {
         this.nom = nom;

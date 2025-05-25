@@ -21,7 +21,7 @@ public class PointageController {
         return pointageService.genererTravailPrevu(prevuData);
     }
 
-    @GetMapping("tours")
+    @PostMapping("tours")
     public ResponseEntity<ApiResponse<?>> fetchTours(@RequestBody FetchToursDto data) {
         return pointageService.fetchTours(data);
     }
@@ -42,7 +42,7 @@ public class PointageController {
     }
 
     @PostMapping("change-agent")
-    public ResponseEntity<ApiResponse<Void>> changeAgent(@RequestBody ChangeAgentDto data) {
+    public ResponseEntity<ApiResponse<?>> changeAgent(@RequestBody ChangeAgentDto data) {
         return pointageService.changeAgent(data);
     }
 

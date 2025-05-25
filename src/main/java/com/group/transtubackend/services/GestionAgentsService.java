@@ -4,8 +4,10 @@ import com.group.transtubackend.dto.AgentResponse;
 import com.group.transtubackend.dto.ApiResponse;
 import com.group.transtubackend.dto.CreateAgentDto;
 import com.group.transtubackend.entities.Agent;
+import com.group.transtubackend.entities.TourService;
 import com.group.transtubackend.entities.Utilisateur;
 import com.group.transtubackend.repositories.AgentRepository;
+import com.group.transtubackend.repositories.TourServiceRepository;
 import com.group.transtubackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +21,13 @@ public class GestionAgentsService {
 
     private final AgentRepository agentRepository;
     private final UserRepository userRepository;
+    private final TourServiceRepository tourServiceRepository;
 
     @Autowired
-    public GestionAgentsService(AgentRepository agentRepository, UserRepository userRepository) {
+    public GestionAgentsService(AgentRepository agentRepository, UserRepository userRepository, TourServiceRepository tourServiceRepository) {
         this.agentRepository = agentRepository;
         this.userRepository = userRepository;
+        this.tourServiceRepository = tourServiceRepository;
     }
 
     public ResponseEntity<ApiResponse<Agent>> addAgent(CreateAgentDto agentData) {
@@ -53,6 +57,15 @@ public class GestionAgentsService {
         Optional<Agent> agent = agentRepository.findById(matricule);
 
         if (agent.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Agent n'est pas trouver"));
+
+        List<TourService> tours = tourServiceRepository.findByAgent(agent.get());
+
+        tours.forEach(tour -> {
+            if (tour.getDriver() == agent.get()) tour.setDriver(null);
+            else if (tour.getReceiver() == agent.get()) tour.setReceiver(null);
+        });
+
+        tourServiceRepository.saveAll(tours);
 
         agentRepository.delete(agent.get());
 
@@ -89,7 +102,7 @@ public class GestionAgentsService {
                 .code_emploi_assure(agent.getCode_emploi_assure())
                 .code_grade(agent.getCode_grade())
                 .role(agent.getRole())
-                .departement(agent.getDistrict().getName())
+                .district(agent.getDistrict().getName())
                 .build()).toList();
 
         return ResponseEntity.ok(agentsResponse);

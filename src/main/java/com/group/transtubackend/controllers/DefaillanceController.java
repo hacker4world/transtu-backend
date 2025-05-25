@@ -3,6 +3,7 @@ package com.group.transtubackend.controllers;
 import com.group.transtubackend.dto.ApiResponse;
 import com.group.transtubackend.dto.DefaillanceDTO;
 import com.group.transtubackend.dto.DefaillanceResponse;
+import com.group.transtubackend.dto.DefaillanceResponseDto;
 import com.group.transtubackend.entities.Defaillance;
 import com.group.transtubackend.services.DefaillanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class DefaillanceController {
     private DefaillanceService defaillanceService;
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<Defaillance>> addDefaillance(@RequestBody DefaillanceDTO dto) {
+    public ResponseEntity<ApiResponse<DefaillanceResponseDto>> addDefaillance(@RequestBody DefaillanceDTO dto) {
         return defaillanceService.addDefaillance(dto);
     }
     @PutMapping("/{id}")

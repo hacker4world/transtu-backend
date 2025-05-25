@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface LatencyRepository extends JpaRepository<Latency, Long> {
-    List<Absence> findByAgentAndDayAndMonthAndYear(Agent agent, int day, int month, int year);
+    List<Latency> findByAgentAndDayAndMonthAndYear(Agent agent, int day, int month, int year);
 }

@@ -20,5 +20,5 @@ public class AgentResponse {
     private String code_emploi_assure;
     private String code_grade;
     private String role;
-    private String departement;
+    private String district;
 }

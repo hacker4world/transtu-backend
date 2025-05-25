@@ -12,8 +12,8 @@ import lombok.Setter;
 public class TourServiceResponse {
     private String driver;
     private String receiver;
-    private int heuresJour;
-    private int heuresNuit;
+    private int heures_jour;
+    private int heures_nuit;
     private String saison;
     private int day;
     private int dayCode;

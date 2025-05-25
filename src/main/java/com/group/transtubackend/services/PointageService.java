@@ -97,8 +97,8 @@ public class PointageService {
             TourServiceResponse tourServiceResponse = TourServiceResponse.builder()
                     .driver(tourService.getDriver().getNom())
                     .receiver(tourService.getReceiver().getNom())
-                    .heuresJour(tourService.getTour().getHeures_jour())
-                    .heuresNuit(tourService.getTour().getHeures_nuit())
+                    .heures_jour(tourService.getTour().getHeures_jour())
+                    .heures_nuit(tourService.getTour().getHeures_nuit())
                     .saison(saison)
                     .day(prevuData.getDay())
                     .dayCode(prevuData.getDayCode())
@@ -110,7 +110,6 @@ public class PointageService {
         }
 
         return ResponseEntity.ok(new ApiResponse<>("Travail prévu généré avec succès", response));
-
 
     }
 
@@ -130,7 +129,9 @@ public class PointageService {
                     return TourServiceResponseDto.builder()
                             .tourId(tour.getId())
                             .driver(tour.getDriver().getNom())
+                            .driverId(tour.getDriver().getMatricule())
                             .receiver(tour.getReceiver().getNom())
+                            .receiverId(tour.getReceiver().getMatricule())
                             .heures_jour(tour.getTour().getHeures_jour())
                             .heures_nuit(tour.getTour().getHeures_nuit())
                             .build();
@@ -178,11 +179,11 @@ public class PointageService {
 
         if (agent.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Agent not found"));
 
-        List<Absence> existingLatencies = latencyRepository.findByAgentAndDayAndMonthAndYear(
+        List<Latency> existingLatencies = latencyRepository.findByAgentAndDayAndMonthAndYear(
                 agent.get(), data.getDay(), data.getMonth(), data.getYear()
         );
 
-        if (!existingLatencies.isEmpty()) return ResponseEntity.status(400).body(new ApiResponse<>("Agent already marked absent in this date"));
+        if (!existingLatencies.isEmpty()) return ResponseEntity.status(400).body(new ApiResponse<>("Agent already marked late in this date"));
 
         Latency latency = Latency.builder()
                 .agent(agent.get())
@@ -198,7 +199,7 @@ public class PointageService {
         return ResponseEntity.status(200).body(new ApiResponse<>("Agent marked as late"));
     }
 
-    public ResponseEntity<ApiResponse<Void>> changeAgent(ChangeAgentDto data) {
+    public ResponseEntity<ApiResponse<?>> changeAgent(ChangeAgentDto data) {
         Optional<TourService> tourService = tourServiceRepository.findById(data.getTourId());
 
         if (tourService.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Tour not found"));
@@ -236,7 +237,12 @@ public class PointageService {
 
         tourServiceRepository.save(tourService.get());
 
-        return ResponseEntity.status(200).body(new ApiResponse<>("Agent has been changed"));
+        return ResponseEntity.status(200).body(new ApiResponse<>("Agent has been changed",
+                ChangeAgentResponseDto
+                .builder()
+                .agentId(randomAgent.getMatricule())
+                .agentName(randomAgent.getNom()).build()
+        ));
 
     }
 

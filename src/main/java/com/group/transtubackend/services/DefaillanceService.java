@@ -3,6 +3,7 @@ package com.group.transtubackend.services;
 import com.group.transtubackend.dto.ApiResponse;
 import com.group.transtubackend.dto.DefaillanceDTO;
 import com.group.transtubackend.dto.DefaillanceResponse;
+import com.group.transtubackend.dto.DefaillanceResponseDto;
 import com.group.transtubackend.entities.Agent;
 import com.group.transtubackend.entities.Defaillance;
 import com.group.transtubackend.repositories.AgentRepository;
@@ -25,7 +26,7 @@ public class DefaillanceService {
     @Autowired
     private DefaillanceRepository defaillanceRepository;
 
-    public ResponseEntity<ApiResponse<Defaillance>> addDefaillance(DefaillanceDTO dto) {
+    public ResponseEntity<ApiResponse<DefaillanceResponseDto>> addDefaillance(DefaillanceDTO dto) {
         Optional<Agent> agentOpt = agentRepository.findById(dto.getAgentId());
 
         if (agentOpt.isEmpty()) {
@@ -36,15 +37,18 @@ public class DefaillanceService {
                 dto.getNombre_jour(),
                 dto.getDateDebut(),
                 dto.getDateFin(),
-                dto.getHeureDebut(),
-                dto.getHeureFin(),
-                dto.getNbre_heure(),
                 agentOpt.get()
         );
 
         Defaillance saved = defaillanceRepository.save(defaillance);
 
-        return ResponseEntity.ok(new ApiResponse<>("Défaillance ajoutée avec succès"));
+        return ResponseEntity.ok(new ApiResponse<>("Défaillance ajoutée avec succès", DefaillanceResponseDto.builder()
+                .id(saved.getMatricule())
+                .agentNom(agentOpt.get().getNom())
+                .agentPrenom(agentOpt.get().getPrenom())
+                .dateDebut(saved.getDateDebut())
+                .dateFin(saved.getDateFin())
+                .build()));
     }
     public ResponseEntity<ApiResponse<Defaillance>> updateDefaillance(int id, DefaillanceDTO dto) {
         Optional<Defaillance> defOpt = defaillanceRepository.findById(id);
@@ -62,9 +66,6 @@ public class DefaillanceService {
         def.setNombre_jour(dto.getNombre_jour());
         def.setDateDebut(dto.getDateDebut());
         def.setDateFin(dto.getDateFin());
-        def.setHeureDebut(dto.getHeureDebut());
-        def.setHeureFin(dto.getHeureFin());
-        def.setNbre_heure(dto.getNbre_heure());
         def.setAgent(agentOpt.get());
 
         Defaillance updated = defaillanceRepository.save(def);
@@ -89,9 +90,6 @@ public class DefaillanceService {
                         defaillance.getNombre_jour(),
                         defaillance.getDateDebut(),
                         defaillance.getDateFin(),
-                        defaillance.getHeureDebut(),
-                        defaillance.getHeureFin(),
-                        defaillance.getNbre_heure(),
                         defaillance.getAgent().getMatricule(),
                         defaillance.getAgent().getNom(),
                         defaillance.getAgent().getPrenom()
@@ -106,9 +104,6 @@ public class DefaillanceService {
                         defaillance.getNombre_jour(),
                         defaillance.getDateDebut(),
                         defaillance.getDateFin(),
-                        defaillance.getHeureDebut(),
-                        defaillance.getHeureFin(),
-                        defaillance.getNbre_heure(),
                         defaillance.getAgent().getMatricule(),
                         defaillance.getAgent().getNom(),
                         defaillance.getAgent().getPrenom()
