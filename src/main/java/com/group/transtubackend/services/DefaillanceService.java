@@ -44,6 +44,7 @@ public class DefaillanceService {
 
         return ResponseEntity.ok(new ApiResponse<>("Défaillance ajoutée avec succès", DefaillanceResponseDto.builder()
                 .id(saved.getMatricule())
+                .agentId(agentOpt.get().getMatricule())
                 .agentNom(agentOpt.get().getNom())
                 .agentPrenom(agentOpt.get().getPrenom())
                 .dateDebut(saved.getDateDebut())

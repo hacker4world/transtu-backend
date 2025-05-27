@@ -1,9 +1,7 @@
 package com.group.transtubackend.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -11,6 +9,8 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Conge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +23,4 @@ public class Conge {
     @ManyToOne
     @JoinColumn(name = "agent_id")
     private Agent agent;
-
-    public Conge(LocalDate dateDebut, LocalDate dateFin, int nbr_jour, String code_conge, Agent agent) {
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-        this.nbr_jour = nbr_jour;
-        this.code_conge = code_conge;
-        this.agent = agent;
-    }
 }

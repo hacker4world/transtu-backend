@@ -5,16 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
+@Data
 @AllArgsConstructor
 @Builder
-@Data
-public class DefaillanceResponseDto {
+public class AjouterCongeResponseDto {
     private int id;
     private LocalDate dateDebut;
     private LocalDate dateFin;
-    private String agentNom;
-    private String agentPrenom;
+    private int nbrJours;
+    private String agentName;
     private int agentId;
 }
