@@ -96,6 +96,8 @@ public class CongeService {
         conge.setDateFin(congeData.getDateFin());
         conge.setNbr_jour(congeData.getDateFin().getDayOfYear() - congeData.getDateDebut().getDayOfYear());
 
+        congeRepository.save(conge);
+
         return ResponseEntity.ok(new ApiResponse<>("Conge updated"));
     }
 }
