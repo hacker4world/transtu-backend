@@ -32,8 +32,8 @@ public class CongeController {
     }
 
     @PostMapping("modifier")
-    public ResponseEntity<ApiResponse<?>> modifierConge(@RequestBody UpdateCongeDto) {
-
+    public ResponseEntity<ApiResponse<?>> modifierConge(@RequestBody UpdateCongeDto congeData) {
+        return congeService.updateConge(congeData);
     }
 
     @DeleteMapping("delete/{id}")
