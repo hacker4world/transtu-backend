@@ -46,4 +46,9 @@ public class PointageController {
         return pointageService.changeAgent(data);
     }
 
+    @PostMapping("heures")
+    public ResponseEntity<ApiResponse<HeuresAgentResponse>> getHeures(@RequestBody HeuresAgentDto data) {
+        return pointageService.calculHeures(data);
+    }
+
 }

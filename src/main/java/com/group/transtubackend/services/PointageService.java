@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -242,6 +243,78 @@ public class PointageService {
                 .builder()
                 .agentId(randomAgent.getMatricule())
                 .agentName(randomAgent.getNom()).build()
+        ));
+
+    }
+
+    public ResponseEntity<ApiResponse<HeuresAgentResponse>> calculHeures(HeuresAgentDto agentData) {
+        Optional<Agent> agent = agentRepository.findById(agentData.getAgentId());
+
+        if (agent.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Agent not found"));
+
+        int heures_jour = 0;
+        int heures_nuit = 0;
+
+        List<TourService> tours = tourServiceRepository.findByAgent(agent.get());
+
+        tours = tours.stream().filter(tour -> {
+            LocalDate tourDate = LocalDate.of(tour.getYear(), tour.getMonth(), tour.getDay());
+            return tourDate.isAfter(agentData.getDateDebut()) && tourDate.isBefore(agentData.getDateFin());
+        }).toList();
+
+        for (TourService tour : tours) {
+            if (tour.getTour().getHeures_jour() > 0) {
+                heures_jour += tour.getTour().getHeures_jour();
+            }
+            else {
+                heures_nuit += tour.getTour().getHeures_nuit();
+            }
+        }
+
+        int absence_days = 0;
+
+        List<Absence> absences = absenceRepository.findByAgent(agent.get());
+
+        absences = absences.stream().filter(absence -> {
+            LocalDate date = LocalDate.of(absence.getYear(), absence.getMonth(), absence.getDay());
+            return date.isAfter(agentData.getDateDebut()) && date.isBefore(agentData.getDateFin());
+        }).toList();
+
+        absence_days += absences.size();
+
+        List<Defaillance> defaillances = defaillanceRepository.findByAgent(agent.get());
+
+        defaillances = defaillances.stream().filter(defaillance -> {
+            return defaillance.getDateDebut().isAfter(agentData.getDateDebut()) && defaillance.getDateFin().isBefore(agentData.getDateFin());
+        }).toList();
+
+        long defaillance_days = 0L;
+
+        for (Defaillance defaillance : defaillances) {
+            defaillance_days += ChronoUnit.DAYS.between(defaillance.getDateDebut(), defaillance.getDateFin());
+        }
+
+        List<Conge> conges = congeRepository.findByAgent(agent.get());
+
+        conges = conges.stream().filter(conge -> {
+            return conge.getDateDebut().isAfter(agentData.getDateDebut()) && conge.getDateFin().isBefore(agentData.getDateFin());
+        }).toList();
+
+        long conges_days = 0L;
+
+        for (Conge conge : conges) {
+            conges_days += ChronoUnit.DAYS.between(conge.getDateDebut(), conge.getDateFin());
+        }
+
+        return ResponseEntity.status(200).body(new ApiResponse<>("",
+                HeuresAgentResponse.builder()
+                        .jours_defaillances(defaillance_days)
+                        .jours_absences(absence_days)
+                        .jours_conges(conges_days)
+                        .heures_jour(heures_jour)
+                        .heures_nuit(heures_nuit)
+                        .agentName(agent.get().getNom() + " " + agent.get().getPrenom())
+                        .build()
         ));
 
     }

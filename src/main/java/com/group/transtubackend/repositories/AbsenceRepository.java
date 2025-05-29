@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface AbsenceRepository extends JpaRepository<Absence, Long> {
     List<Absence> findByAgentAndDayAndMonthAndYear(Agent agent, int day, int month, int year);
+    List<Absence> findByAgent(Agent agent);
 }
