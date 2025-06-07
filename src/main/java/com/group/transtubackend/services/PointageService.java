@@ -47,6 +47,14 @@ public class PointageService {
 
         String saison = getSaison(prevuData.getDay(), prevuData.getMonth());
 
+        List<TourService> toursToday = tourServiceRepository.findAllByDayAndMonthAndYear(
+                prevuData.getDay(), prevuData.getMonth(), prevuData.getYear()
+        ).stream().filter(tour -> tour.getTour().getDistrict() == district).toList();
+
+        toursToday.forEach(tour -> {
+            tourServiceRepository.delete(tour);
+        });
+
         List<ListeTours> tours = listToursRepository.findByDistrictAndJourAndSaison(district, prevuData.getDayCode(), saison);
 
         LocalDate targetDate = LocalDate.of(prevuData.getYear(), prevuData.getMonth(), prevuData.getDay());

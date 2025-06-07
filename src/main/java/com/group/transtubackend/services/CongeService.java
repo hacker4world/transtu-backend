@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,18 @@ public class CongeService {
         }
 
         int nbrJours = congeData.getDateFin().getDayOfYear() - congeData.getDateDebut().getDayOfYear();
+
+        List<Conge> conges = congeRepository.findByAgent(agentOpt.get());
+
+        List<Conge> overlapping = conges.stream().filter(
+                c -> isOverlapping(
+                        c.getDateDebut(), c.getDateFin(),
+                        congeData.getDateDebut(), congeData.getDateFin()
+                )).toList();
+
+        if (!overlapping.isEmpty()) {
+            return ResponseEntity.status(400).body(new ApiResponse<>("Ce congé est en conflit avec un autre congé pour le même agent"));
+        }
 
         Conge conge = Conge.builder()
                 .agent(agentOpt.get())
@@ -99,6 +112,14 @@ public class CongeService {
         congeRepository.save(conge);
 
         return ResponseEntity.ok(new ApiResponse<>("Conge updated"));
+    }
+
+    private boolean isOverlapping(
+            LocalDate defStart, LocalDate defEnd,
+            LocalDate searchStart, LocalDate searchEnd) {
+
+        // Check if the defaillance range overlaps with search range
+        return !defStart.isAfter(searchEnd) && !defEnd.isBefore(searchStart);
     }
 
 }

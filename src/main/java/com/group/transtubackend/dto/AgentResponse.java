@@ -17,8 +17,7 @@ public class AgentResponse {
     private String prenom;
     private Date date_naiss;
     private String situation_familiale;
-    private String code_emploi_assure;
-    private String code_grade;
+    private String email;
     private String role;
     private String district;
 }

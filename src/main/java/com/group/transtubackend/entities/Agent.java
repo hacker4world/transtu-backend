@@ -20,9 +20,11 @@ public class Agent {
     private String prenom;
     private Date date_naiss;
     private String situation_familiale;
-    private String code_emploi_assure;
-    private String code_grade;
     private String role;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Utilisateur utilisateur;
 
     @ManyToOne
     @JoinColumn(name = "code_departement")
@@ -43,14 +45,13 @@ public class Agent {
     @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Latency> latencies;
 
-    public Agent(String nom, String prenom, Date date_naiss, String situation_familiale, String code_emploi_assure, String code_grade, String role, District district) {
+    public Agent(String nom, String prenom, Date date_naiss, String situation_familiale, String role, District district, Utilisateur utilisateur) {
         this.nom = nom;
         this.prenom = prenom;
         this.date_naiss = date_naiss;
         this.situation_familiale = situation_familiale;
-        this.code_emploi_assure = code_emploi_assure;
-        this.code_grade = code_grade;
         this.role = role;
         this.district = district;
+        this.utilisateur = utilisateur;
     }
 }

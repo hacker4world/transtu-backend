@@ -27,7 +27,7 @@ public class LatencyService {
                         latency.getYear(),
                         latency.getHours(),
                         latency.getMinutes(),
-                        latency.getAgent().getNom() + " " + latency.getAgent().getPrenom())) // Assuming Agent has getName()
+                        latency.getAgent().getNom() + " " + latency.getAgent().getPrenom(), latency.getAgent().getMatricule())) // Assuming Agent has getName()
                 .toList()));
     }
 

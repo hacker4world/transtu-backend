@@ -30,7 +30,7 @@ public class AbsenceService {
                     AbsenceResponseDto.builder()
                             .id(absence.getId())
                             .agentName(absence.getAgent().getNom() + " " + absence.getAgent().getPrenom())
-                            .agentId(absence.getId())
+                            .agentId(absence.getAgent().getMatricule())
                             .day(absence.getDay())
                             .month(absence.getMonth())
                             .year(absence.getYear())

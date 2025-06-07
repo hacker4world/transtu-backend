@@ -13,5 +13,5 @@ public class AbsenceResponseDto {
     private int month;
     private int year;
     private String agentName;
-    private Long agentId;
+    private int agentId;
 }

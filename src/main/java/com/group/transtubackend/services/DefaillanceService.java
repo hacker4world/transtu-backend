@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +32,17 @@ public class DefaillanceService {
 
         if (agentOpt.isEmpty()) {
             return ResponseEntity.status(404).body(new ApiResponse<>("Agent introuvable"));
+        }
+
+        List<Defaillance> allDefaillances = defaillanceRepository.findByAgent(agentOpt.get());
+
+        List<Defaillance> overlapping = allDefaillances.stream().filter(d -> isOverlapping(
+                d.getDateDebut(), d.getDateFin(),
+                dto.getDateDebut(), dto.getDateFin()
+        )).toList();
+
+        if (!overlapping.isEmpty()) {
+            return ResponseEntity.status(400).body(new ApiResponse<>("Cette défaillance est en conflit avec une autre défaillance pour le même agent"));
         }
 
         Defaillance defaillance = new Defaillance(
@@ -112,6 +124,13 @@ public class DefaillanceService {
                 .orElse(null);
     }
 
+    private boolean isOverlapping(
+            LocalDate defStart, LocalDate defEnd,
+            LocalDate searchStart, LocalDate searchEnd) {
+
+        // Check if the defaillance range overlaps with search range
+        return !defStart.isAfter(searchEnd) && !defEnd.isBefore(searchStart);
+    }
 
 
 }

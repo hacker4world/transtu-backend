@@ -36,15 +36,31 @@ public class GestionAgentsService {
 
         if (utilisateur.isEmpty()) return ResponseEntity.status(404).body(new ApiResponse<>("Admin n'est pas trouver"));
 
+        Optional<Utilisateur> agentUser = userRepository.findByEmail(agentData.getEmail());
+
+        if (agentUser.isPresent()) {
+            return ResponseEntity.status(400).body(new ApiResponse<>("Email est deja utilise"));
+        }
+
+        Utilisateur newUser = Utilisateur.builder()
+                .nom(agentData.getNom())
+                .prenom(agentData.getPrenom())
+                .email(agentData.getEmail())
+                .password(agentData.getPassword())
+                .role("agent")
+                .district(utilisateur.get().getDistrict())
+                .build();
+
+        userRepository.save(newUser);
+
         Agent agent = new Agent(
                 agentData.getNom(),
                 agentData.getPrenom(),
                 agentData.getDate_naiss(),
                 agentData.getSituation_familiale(),
-                agentData.getCode_emploi_assure(),
-                agentData.getCode_grade(),
                 agentData.getRole(),
-                utilisateur.get().getDistrict()
+                utilisateur.get().getDistrict(),
+                newUser
         );
 
         Agent savedAgent = agentRepository.save(agent);
@@ -80,8 +96,6 @@ public class GestionAgentsService {
             agent.setPrenom(agentData.getPrenom());
             agent.setDate_naiss(agentData.getDate_naiss());
             agent.setSituation_familiale(agentData.getSituation_familiale());
-            agent.setCode_emploi_assure(agentData.getCode_emploi_assure());
-            agent.setCode_grade(agentData.getCode_grade());
             agent.setRole(agentData.getRole());
 
             agentRepository.save(agent);
@@ -99,8 +113,7 @@ public class GestionAgentsService {
                 .prenom(agent.getPrenom())
                 .date_naiss(agent.getDate_naiss())
                 .situation_familiale(agent.getSituation_familiale())
-                .code_emploi_assure(agent.getCode_emploi_assure())
-                .code_grade(agent.getCode_grade())
+                .email(agent.getUtilisateur().getEmail())
                 .role(agent.getRole())
                 .district(agent.getDistrict().getName())
                 .build()).toList();

@@ -15,4 +15,5 @@ public class LatencyResponseDto {
     private int hours;
     private int minutes;
     private String agentName;
+    private int agentId;
 }
