@@ -1,7 +1,7 @@
 package com.group.transtubackend.services;
 
 import com.group.transtubackend.dto.ApiResponse;
-import com.group.transtubackend.entities.LatencyResponseDto;
+import com.group.transtubackend.dto.LatencyResponseDto;
 import com.group.transtubackend.repositories.LatencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

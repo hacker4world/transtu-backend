@@ -1,4 +1,4 @@
-package com.group.transtubackend.entities;
+package com.group.transtubackend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
