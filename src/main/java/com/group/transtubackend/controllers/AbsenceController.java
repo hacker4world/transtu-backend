@@ -6,6 +6,7 @@ import com.group.transtubackend.services.AbsenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +25,10 @@ public class AbsenceController {
     @GetMapping("all")
     public ResponseEntity<ApiResponse<List<AbsenceResponseDto>>> getAllAbsences() {
         return absenceService.getAllAbsences();
+    }
+
+    @GetMapping("agent/{agentId}")
+    public ResponseEntity<ApiResponse<List<AbsenceResponseDto>>> getAbsencesByAgentId(@PathVariable int agentId) {
+        return absenceService.getAbsencesByAgentId(agentId);
     }
 }

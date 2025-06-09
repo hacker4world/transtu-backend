@@ -15,4 +15,5 @@ public class LoginResponseDto {
     private String role;
     private String departmentName;
     private int departmentId;
+    private int agentId;
 }

@@ -9,6 +9,7 @@ import com.group.transtubackend.entities.Utilisateur;
 import com.group.transtubackend.repositories.AgentRepository;
 import com.group.transtubackend.repositories.TourServiceRepository;
 import com.group.transtubackend.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,7 @@ public class GestionAgentsService {
 
     }
 
+    @Transactional
     public ResponseEntity<ApiResponse<String>> removeAgent(int matricule) {
         Optional<Agent> agent = agentRepository.findById(matricule);
 
@@ -85,6 +87,8 @@ public class GestionAgentsService {
 
         agentRepository.delete(agent.get());
 
+        userRepository.delete(agent.get().getUtilisateur());
+
         return ResponseEntity.ok(new ApiResponse<>("Agent a ete supprime"));
     }
     public ResponseEntity<ApiResponse<String>> UpdateAgent(int id, CreateAgentDto agentData) {
@@ -98,7 +102,14 @@ public class GestionAgentsService {
             agent.setSituation_familiale(agentData.getSituation_familiale());
             agent.setRole(agentData.getRole());
 
+            Utilisateur utilisateur = agent.getUtilisateur();
+
+            utilisateur.setNom(agentData.getNom());
+            utilisateur.setPrenom(agentData.getPrenom());
+
             agentRepository.save(agent);
+
+            userRepository.save(utilisateur);
             return ResponseEntity.ok(new ApiResponse<>("Agent a ete mis a jour"));
         } else {
             return ResponseEntity.ok(new ApiResponse<>("Agent n'est pas trouver"));

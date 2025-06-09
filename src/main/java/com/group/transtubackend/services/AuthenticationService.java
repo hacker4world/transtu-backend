@@ -49,6 +49,7 @@ public class AuthenticationService {
                                 .role(user.getRole())
                                 .departmentName(user.getDistrict().getName())
                                 .departmentId(user.getDistrict().getId())
+                                .agentId(user.getAgent().getMatricule())
                                 .build())
                         .build());
     }

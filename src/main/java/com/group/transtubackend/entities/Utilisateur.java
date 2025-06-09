@@ -23,4 +23,8 @@ public class Utilisateur {
     @ManyToOne
     @JoinColumn(name = "district_id")
     private District district;
+
+    @ManyToOne
+    @JoinColumn(name = "agent_id")
+    private Agent agent;
 }
