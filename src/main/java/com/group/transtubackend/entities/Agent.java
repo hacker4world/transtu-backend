@@ -1,9 +1,9 @@
 package com.group.transtubackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Agent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,24 +24,30 @@ public class Agent {
     private String situation_familiale;
     private String role;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne
+    @JoinColumn(name = "utilisateur_id")
+    @JsonBackReference
     private Utilisateur utilisateur;
 
     @ManyToOne
     @JoinColumn(name = "code_departement")
+    @JsonIgnore
     private District district;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Defaillance> defaillances;
 
     @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Conge> conges;
 
     @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Absence> absences;
 
     @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Latency> latencies;
 
     public Agent(String nom, String prenom, Date date_naiss, String situation_familiale, String role, District district, Utilisateur utilisateur) {

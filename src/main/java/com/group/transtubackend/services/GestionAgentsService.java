@@ -43,6 +43,7 @@ public class GestionAgentsService {
             return ResponseEntity.status(400).body(new ApiResponse<>("Email est deja utilise"));
         }
 
+
         Utilisateur newUser = Utilisateur.builder()
                 .nom(agentData.getNom())
                 .prenom(agentData.getPrenom())
@@ -52,21 +53,22 @@ public class GestionAgentsService {
                 .district(utilisateur.get().getDistrict())
                 .build();
 
+        Agent agent = Agent.builder()
+                .nom(agentData.getNom())
+                .prenom(agentData.getPrenom())
+                .date_naiss(agentData.getDate_naiss())
+                .situation_familiale(agentData.getSituation_familiale())
+                .role(agentData.getRole())
+                .district(utilisateur.get().getDistrict())
+                .build();
+
+        newUser.setAgent(agent);
+        agent.setUtilisateur(newUser);
+
         userRepository.save(newUser);
+        agentRepository.save(agent);
 
-        Agent agent = new Agent(
-                agentData.getNom(),
-                agentData.getPrenom(),
-                agentData.getDate_naiss(),
-                agentData.getSituation_familiale(),
-                agentData.getRole(),
-                utilisateur.get().getDistrict(),
-                newUser
-        );
-
-        Agent savedAgent = agentRepository.save(agent);
-
-        return ResponseEntity.ok(new ApiResponse<>("Agent a ete cree", savedAgent));
+        return ResponseEntity.ok(new ApiResponse<>("Agent a ete cree", agent));
 
     }
 

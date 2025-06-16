@@ -1,5 +1,6 @@
 package com.group.transtubackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,7 @@ public class Utilisateur {
     @JoinColumn(name = "district_id")
     private District district;
 
-    @ManyToOne
-    @JoinColumn(name = "agent_id")
+    @OneToOne(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Agent agent;
 }
