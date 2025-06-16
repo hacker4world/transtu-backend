@@ -47,6 +47,10 @@ public class PointageService {
 
         String saison = getSaison(prevuData.getDay(), prevuData.getMonth());
 
+        System.out.println(district.getName());
+        System.out.println(prevuData.getDayCode());
+        System.out.println(saison);
+
         List<TourService> toursToday = tourServiceRepository.findAllByDayAndMonthAndYear(
                 prevuData.getDay(), prevuData.getMonth(), prevuData.getYear()
         ).stream().filter(tour -> tour.getTour().getDistrict() == district).toList();
@@ -74,8 +78,6 @@ public class PointageService {
                 .toList());
 
         System.out.println(tours.size());
-        System.out.println(drivers.size());
-        System.out.println(receivers.size());
 
         Collections.shuffle(drivers);
         Collections.shuffle(receivers);
